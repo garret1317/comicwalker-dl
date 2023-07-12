@@ -2,8 +2,10 @@ import argparse
 import json
 import logging
 import os
+import re
 import requests
 import sys
+import urllib.parse
 
 from binascii import unhexlify
 
@@ -69,6 +71,27 @@ def xor(bin, key):
 
     return bytes(retval)
 
+def get_cid_query(url):
+    u = urllib.parse.urlparse(url)
+    qs = urllib.parse.parse_qs(u.query)
+    return qs["cid"][0]
+
+def extract_cid(cid):
+    if cid.startswith("http"):
+        # have been given an url, lets extract the cid from it
+        if 'contents' in cid:
+            # this is a whole-series page
+            page = requests.get(cid)
+            urls = re.findall(r"<a [^>]*href=['\"](?P<url>[^'\"]+)['\"][^>]*'backnumber'", page.text)
+                             # the links to the chapters always have an onclick arg that includes 'backnumber'
+            return [get_cid_query(i) for i in urls]
+        elif 'viewer' in cid:
+            # this is a chapter page
+            return [get_cid_query(cid)]
+
+    # otherwise probably a raw cid
+    return [cid]
+
 def main():
 
     headers = {
@@ -88,9 +111,11 @@ def main():
         'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/100.0.4896.127 Safari/537.36',
     }
 
-    content_url = f'https://comicwalker-api.nicomanga.jp/api/v1/comicwalker/episodes/{args.cid}'
+    cids = extract_cid(args.cid)
+    for cid in cids:
+        content_url = f'https://comicwalker-api.nicomanga.jp/api/v1/comicwalker/episodes/{cid}'
+        start(content_url, headers)
 
-    start(content_url, headers)
 
 if __name__ == "__main__":
     main()

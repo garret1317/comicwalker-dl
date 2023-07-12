@@ -61,8 +61,6 @@ def undrm(url, headers, cid_info):
         with open(f'{save_path}/{pagination}', 'wb') as f:
             f.write(file)
 
-    logging.info('Done.')
-
 def xor(bin, key):
     retval = []
 

@@ -36,14 +36,14 @@ def start(url, headers):
 def undrm(url, headers, cid_info):
     meta = requests.get(url=url, headers=headers).json()
 
-    print('Page count: {}\n'.format(len(meta['data']['result'])))
+    print('Page count: {}'.format(len(meta['data']['result'])))
 
     save_path = os.path.join('downloaded_chapters/{}/{}'.format(cid_info['TITLE'], cid_info['CHAPTER']))
 
     if not os.path.exists(save_path):
         os.makedirs(save_path)
 
-    print(f'Saving chapter to {save_path}\n')
+    print(f'Saving chapter to {save_path}')
 
     for num, page in enumerate(meta['data']['result']):
 

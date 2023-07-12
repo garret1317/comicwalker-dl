@@ -7,10 +7,6 @@ import sys
 
 from binascii import unhexlify
 
-os.system('cls||clear')
-
-print('COMICWALKER-DL\n')
-
 parser = argparse.ArgumentParser()
 parser.add_argument('-cid', help='content id, &cid={...}. see url when reading a chapter')
 parser.add_argument('-nolog', help='no progressive download logs on terminal', action="store_true")

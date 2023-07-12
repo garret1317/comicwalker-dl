@@ -1,5 +1,4 @@
 import argparse
-import coloredlogs
 import json
 import logging
 import os
@@ -11,8 +10,6 @@ from binascii import unhexlify
 os.system('cls||clear')
 
 print('COMICWALKER-DL\n')
-
-coloredlogs.install(fmt='%(asctime)s,%(msecs)03d - %(levelname)s - %(message)s')
 
 parser = argparse.ArgumentParser()
 parser.add_argument('-cid', help='content id, &cid={...}. see url when reading a chapter')

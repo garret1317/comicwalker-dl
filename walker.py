@@ -61,15 +61,15 @@ def undrm(url, headers, cid_info):
 
         with open(f'{save_path}/{pagination}', 'wb') as f:
             f.write(xor(enc, key))
-    
+
     logging.info('Done.')
 
 def xor(bin, key):
     retval = []
-    
+
     for i in range(len(bin)):
         retval.append(bin[i] ^ key[i % len(key)])
-    
+
     return bytes(retval)
 
 def main():
@@ -92,7 +92,7 @@ def main():
     }
 
     content_url = f'https://comicwalker-api.nicomanga.jp/api/v1/comicwalker/episodes/{args.cid}'
-    
+
     start(content_url, headers)
 
 if __name__ == "__main__":

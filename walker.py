@@ -17,7 +17,7 @@ if args.cid == None:
     sys.exit()
 
 def start(url, headers):
-    meta = json.loads(requests.get(url=url, headers=headers).content)
+    meta = requests.get(url=url, headers=headers).json()
     img_url = f'{url}/frames?enable_webp=true'
 
     try:
@@ -36,7 +36,7 @@ def start(url, headers):
         undrm(img_url, headers, cid_info)
 
 def undrm(url, headers, cid_info):
-    meta = json.loads(requests.get(url=url, headers=headers).content)
+    meta = requests.get(url=url, headers=headers).json()
 
     print('Page count: {}\n'.format(len(meta['data']['result'])))
 
@@ -67,8 +67,8 @@ def undrm(url, headers, cid_info):
 def xor(bin, key):
     retval = []
 
-    for i in range(len(bin)):
-        retval.append(bin[i] ^ key[i % len(key)])
+    for idx, val in enumerate(bin):
+        retval.append(val ^ key[idx % len(key)])
 
     return bytes(retval)
 

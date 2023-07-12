@@ -1,52 +1,41 @@
 # comicwalker-dl
 
-A python tool to download free manga/comic from [ComicWalker](https://comic-walker.com/ "ComicWalker official website").
+A python tool to download free manga/comics from [ComicWalker](https://comic-walker.com/).
 
-The downloaded images are untouched and original from source, they are not modified in any way. flow:
-
-> image source (.webp) -> download process by python script -> output (.webp)
+The downloaded images are untouched from the source, they are not modified in any way.
 
 ## Requirements
-- python version 3
-- essential modules on `requirements.txt`, do `pip install -r requirements.txt`
-    - for all modules see inside the code
+- python3
+- [`requests`](https://docs.python-requests.org/)
 
 ## Usage
-this tool is a standalone python script, you can download the files as a zip/git clone, or just download `walker.py` and the requirements is enough.
 
-0. prep the requirements beforehand
-1. put `walker.py` in a folder of your choice
-2. open a terminal (.i.e CMD) in that folder
-3. see below for detailed usage
-
-all downloaded chapters are saved to `downloaded_chapters\{title}\{chapter}`
-
----
 ```
-usage: walker.py [-h] [-cid CID] [-nolog]
+usage: walker.py [-h] [-v] cid
 
-optional arguments:
-  -h, --help  show this help message and exit
-  -cid CID    content id, &cid={...}. see url when reading a chapter
-  -nolog      no progressive download logs on terminal
+positional arguments:
+  cid            content id, chapter URL, or series URL
+
+options:
+  -h, --help     show this help message and exit
+  -v, --verbose  log more
 ```
----
 
-to download a chapter, simply run the .py script by:
+all downloaded chapters are saved to `downloaded_chapters/{title}/{chapter}`
 
-```> python walker.py -cid [CID]```
+### Examples
 
----
+#### Raw CID
 
-example:
+`./walker.py KDCW_AM05000042010001_68`
 
-```> python walker.py -cid KDCW_CW01000002010001_68```
+#### Chapter page
 
----
+`./walker.py https://comic-walker.com/viewer/?tw=2&dlcl=ja&cid=KDCW_AM05000042010002_68`
 
-add `-nolog` argument if you want clean terminal output during the progress.
+#### Series page
 
-```> python walker.py -cid KDCW_CW01000002010001_68 -nolog```
+`./walker.py https://comic-walker.com/contents/detail/KDCW_AM05000042010000_68/`
 
 ---
 

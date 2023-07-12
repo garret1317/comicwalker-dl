@@ -9,12 +9,14 @@ from binascii import unhexlify
 
 parser = argparse.ArgumentParser()
 parser.add_argument('-cid', help='content id, &cid={...}. see url when reading a chapter')
-parser.add_argument('-nolog', help='no progressive download logs on terminal', action="store_true")
+parser.add_argument('-v', '--verbose', help='no progressive download logs on terminal', action="store_true")
 args = parser.parse_args()
 
 if args.cid == None:
     parser.print_help()
     sys.exit()
+
+logging.basicConfig(format='[%(levelname)s] %(asctime)s: %(message)s', datefmt='%Y-%m-%d %H:%M:%S', level=logging.INFO)
 
 def start(url, headers):
     meta = requests.get(url=url, headers=headers).json()
@@ -49,11 +51,8 @@ def undrm(url, headers, cid_info):
 
     for num, page in enumerate(meta['data']['result']):
 
-        if args.nolog:
-            if page == 1:
-                logging.info('DL in progress...')
-        else:
-            logging.info('Progress: page ' + str(page))
+        if args.verbose:
+            logging.info(f'Downloading page {num+1}')
 
         key = page['meta']['drm_hash']
         file = requests.get(page['meta']['source_url'], headers=headers).content

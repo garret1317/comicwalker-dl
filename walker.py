@@ -47,7 +47,7 @@ def undrm(url, headers, cid_info):
 
     print(f'Saving chapter to {save_path}\n')
 
-    for page in range(1, len(meta['data']['result']) + 1):
+    for num, page in enumerate(meta['data']['result']):
 
         if args.nolog:
             if page == 1:
@@ -55,12 +55,16 @@ def undrm(url, headers, cid_info):
         else:
             logging.info('Progress: page ' + str(page))
 
-        key = unhexlify(meta['data']['result'][page-1]['meta']['drm_hash'][:16])
-        enc = requests.get(meta['data']['result'][page-1]['meta']['source_url'], headers=headers).content
-        pagination = str(page) + '.webp'
+        key = page['meta']['drm_hash']
+        file = requests.get(page['meta']['source_url'], headers=headers).content
+        pagination = str(num + 1) + '.webp'
+
+        if key is not None:
+            key = unhexlify(key[:16])
+            file = xor(file, key)
 
         with open(f'{save_path}/{pagination}', 'wb') as f:
-            f.write(xor(enc, key))
+            f.write(file)
 
     logging.info('Done.')
 

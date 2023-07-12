@@ -44,7 +44,7 @@ def undrm(url, headers, cid_info):
 
     print('Page count: {}\n'.format(len(meta['data']['result'])))
 
-    save_path = os.path.join('downloaded_chapters\\{}\\{}'.format(cid_info['TITLE'], cid_info['CHAPTER']))
+    save_path = os.path.join('downloaded_chapters/{}/{}'.format(cid_info['TITLE'], cid_info['CHAPTER']))
 
     if not os.path.exists(save_path):
         os.makedirs(save_path)
@@ -63,7 +63,7 @@ def undrm(url, headers, cid_info):
         enc = requests.get(meta['data']['result'][page-1]['meta']['source_url'], headers=headers).content
         pagination = str(page) + '.webp'
 
-        with open(f'{save_path}\\{pagination}', 'wb') as f:
+        with open(f'{save_path}/{pagination}', 'wb') as f:
             f.write(xor(enc, key))
     
     logging.info('Done.')
